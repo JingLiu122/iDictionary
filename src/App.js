@@ -1,94 +1,15 @@
 import React, { Component } from 'react';
+
 import './App.css';
 
-import InputField from './components/InputField';
-import DisplayField from './components/DisplayField';
-import {SearchField} from './components/SearchField';
-import ResultField from './components/ResultField';
+import { HomePage } from './pages/Home';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dictionary: [],
-      search: ''
-    }
-  }
-
-  // retrieve values from the localStorage to the local state per user session
-  componentDidMount() {
-    const value = JSON.parse(localStorage.getItem('dictionary'));
-    if(value) {
-      this.setState({
-        dictionary: value
-      });
-    }
-    // add event listener to save state to localStorage when user leaves/refreshes the page
-    window.addEventListener(
-      "beforeunload",
-      this.insertToLocalStorage.bind(this)
-    );
-  }
-
-
-  componentWillUnmount() {
-    window.removeEventListener(
-      "beforeunload",
-      this.insertToLocalStorage.bind(this)
-    );
-
-    this.insertToLocalStorage();
-  }
-
-  handleInputItem = (dict) => {
-    let index = this.state.dictionary.findIndex(item => item.vocabulary === dict.vocabulary);
-    const word = {vocabulary: dict.vocabulary, type: dict.type, definition: dict.definition};
-    if(index > -1) {
-      const list = [...this.state.dictionary];
-      list[index] = word
-      this.setState({
-        dictionary: list
-      });
-    } else {
-      this.setState({
-        dictionary: [...this.state.dictionary, word]
-      });
-    }
-  }
-
-  handleDeleteItem = (value) => {
-    const filteredDictionary = this.state.dictionary.filter((item) => item.vocabulary !== value);
-
-    this.setState({
-      dictionary: filteredDictionary
-    });
-  }
-
-  handleSearchItem = (word) => {
-    this.setState({
-      search: word
-    });
-  }
-
-  insertToLocalStorage = () => {
-    // obj.toString() => [object Object]
-    localStorage.setItem("dictionary", JSON.stringify(this.state.dictionary));
-  }
-
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1>Dictionary App</h1>
-          <p>Author: Jing</p>
-
-          <InputField onInputItem={this.handleInputItem} />
-          <DisplayField dictionary={this.state.dictionary} onDeleteItem={this.handleDeleteItem}/>
-
-          <SearchField onSearchItem={this.handleSearchItem} />
-          <ResultField dictionary={this.state.dictionary} search={this.state.search} />
-        </header>
-      </div>
+      <React.Fragment>
+        <HomePage />
+      </React.Fragment>
     );
   }
 }

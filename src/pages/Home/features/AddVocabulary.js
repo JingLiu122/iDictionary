@@ -1,0 +1,50 @@
+import React, { useState } from 'react';
+import { Button } from '@material-ui/core';
+
+export function AddVocabulary(props) {
+  const { onInputItem } = props;
+  const [word, setWord] = useState({vocabulary: '', type: '', definition: ''});
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onInputItem(word);
+    setWord({});
+    e.currentTarget.reset();
+  }
+
+  return (
+    <React.Fragment>
+      <form onSubmit={handleSubmit} >
+        <label>
+          Input:
+          <input name="vocabulary" type="text" placeholder="Add a new word here" onChange={(e) => setWord({...word, vocabulary: e.target.value})} required/> 
+        </label>
+        <br />
+        <label>
+          Type:
+          <input name="type" type="text" onChange={(e) => setWord({...word, type: e.target.value})} required />
+        </label>
+        <br />
+        <label>
+          Definition:
+          <textarea onChange={(e) => setWord({...word, definition: e.target.value})} />
+        </label>
+        <br />
+        <Button type="submit" size="small" variant="contained" color="primary">Add</Button>
+      </form>
+    </React.Fragment>
+  );
+}
+
+// function handleChange(e) {
+//   let name = e.target.name;
+//   let value = e.target.value;
+//   if(name === 'vocabulary') {
+//     word.vocabulary = value;
+//   } else if(name === 'type') {
+//     word.type = value;
+//   } else {
+//     word.definition = value;
+//   }
+//   console.log(word);
+// }
