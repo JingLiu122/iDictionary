@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { Grid, Paper } from '@material-ui/core';
-
-import NavBar from '../../components/NavBar';
 import { AddVocabulary, DisplayField, SearchField, ResultField } from './features';
 
 // use Redux
@@ -44,16 +41,6 @@ export function HomePage() {
 
   return (
     <div className="App">
-      <NavBar />
-        {/* <Grid container spacing={1} justify={'center'}>
-          <Grid item sm={8}>
-            <Paper style={style.Paper}>Top</Paper>
-          </Grid>
-          <Grid item sm={8}>
-            <Paper style={style.Paper}>Bottom</Paper>
-          </Grid>
-        </Grid> */}
-        
       <header className="App-header">  
         <AddVocabulary onInputItem={handleInputItem} />
         <br />
