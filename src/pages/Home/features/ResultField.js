@@ -1,8 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export function ResultField(props) {
-  const { dictionary, search } = props;
-
+function ResultField({dictionary = [], search}) {
   // tip: use includes on string
   const result = dictionary.filter(item => item.vocabulary === search);
 
@@ -16,3 +15,13 @@ export function ResultField(props) {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  const { dictionary, search } = state;
+  return {
+    dictionary,
+    search
+  }
+}
+
+export default connect(mapStateToProps)(ResultField);

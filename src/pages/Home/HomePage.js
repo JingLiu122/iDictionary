@@ -1,33 +1,38 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
-import { AddVocabulary, DisplayField, SearchField, ResultField } from './features';
+// import { AddVocabulary, DisplayField, SearchField, ResultField } from './features';
+import AddVocabulary from './features/AddVocabulary';
+import DisplayField from './features/DisplayField';
+import SearchField from './features/SearchField';
+import ResultField from './features/ResultField';
 
-// use Redux
 export function HomePage() {
   const initialDictionary = () => JSON.parse(localStorage.getItem('dictionary')) || [];
   // declare local state variables
-  const [dictionary, setDictionary] = useState(initialDictionary);
+  const [d, setDictionary] = useState(initialDictionary);
   const [search, setSearch] = useState('');
 
+  // side-effect hooks
   useEffect(() => {
     // obj.toString() => [object Object]
-    localStorage.setItem("dictionary", JSON.stringify(dictionary));
-  }, [dictionary]);
+    localStorage.setItem("dictionary", JSON.stringify(d));
+  }, [d]);
 
   function handleInputItem(dict) {
-    let index = dictionary.findIndex(item => item.vocabulary === dict.vocabulary);
+    let index = d.findIndex(item => item.vocabulary === dict.vocabulary);
     const word = {vocabulary: dict.vocabulary, type: dict.type, definition: dict.definition};
     if(index > -1) {
-      const list = [...dictionary];
+      const list = [...d];
       list[index] = word
       setDictionary(list);
     } else {
-      setDictionary([...dictionary, word]);  
+      setDictionary([...d, word]);  
     }
   }
 
   const handleDeleteItem = (value) => {
-    const filteredDictionary = dictionary.filter((item) => item.vocabulary !== value);
+    const filteredDictionary = d.filter((item) => item.vocabulary !== value);
     setDictionary(filteredDictionary);
   }
 
@@ -35,20 +40,18 @@ export function HomePage() {
     setSearch(word);
   }
 
-  const style = {
-    Paper: { marginTop: 20, marginBottom: 10}
-  }
-
   return (
     <div className="App">
-      <header className="App-header">  
-        <AddVocabulary onInputItem={handleInputItem} />
+      <header className="App-header">          
+        <AddVocabulary onInputItem={handleInputItem}/>
         <br />
-        <DisplayField dictionary={dictionary} onDeleteItem={handleDeleteItem}/>
+        <DisplayField onDeleteItem={handleDeleteItem}/>
 
         <SearchField onSearchItem={handleSearchItem} />
-        <ResultField dictionary={dictionary} search={search} />
+        <ResultField />
       </header>
     </div>
   );
 }
+
+// export default connect(mapStateToProps)(HomePage);

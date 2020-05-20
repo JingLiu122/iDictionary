@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
-export function SearchField(props) {
-  const { onSearchItem } = props;
-  let search = '';
+import { searchWord } from '../../../redux';
 
-  function handleChange(e) {
-    search = e.target.value;
-  }
+function SearchField(props) {
+  const { searchWord } = props;
+  const [search, setSearch] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSearchItem(search);
-    search = '';
+    searchWord(search);
+    setSearch('');
     e.currentTarget.reset();
   }
 
@@ -20,7 +19,7 @@ export function SearchField(props) {
       <form onSubmit={handleSubmit}>
         <label>
           Search:
-          <input name="vocabulary" type="text" placeholder="Search a word" onChange={handleChange} required />
+          <input name="vocabulary" type="text" placeholder="Search a word" onChange={(e) => setSearch(e.target.value)} required />
         </label>
         <button type="submit">Search</button>
       </form>
@@ -28,3 +27,10 @@ export function SearchField(props) {
   );
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    searchWord: (value) => dispatch(searchWord(value))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SearchField);
