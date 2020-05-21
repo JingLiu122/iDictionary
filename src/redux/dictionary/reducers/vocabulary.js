@@ -10,9 +10,18 @@ export const vocabulary = (state = initialState, action) => {
   switch(action.type) {
     case ADD_WORD: {
       const { content } = action.payload;
+      let index = state.dictionary.findIndex(item => item.vocabulary === content.vocabulary);
+      let list;
+      if(index > -1) {
+        list = [...state.dictionary];
+        list[index] = content
+      } else {
+        list = [...state.dictionary, content];  
+      }
+
       return {
         ...state,
-        dictionary: [...state.dictionary, content]
+        dictionary: list
       };
     }
     case DELETE_WORD: {
@@ -34,3 +43,13 @@ export const vocabulary = (state = initialState, action) => {
     }
   }
 }
+
+// state.dictionary.map((item) => {
+//   if(item.vocabulary !== content.vocabulary) {
+//     return item;
+//   }
+//   return {
+//     ...item,
+//     ...content
+//   };
+// })

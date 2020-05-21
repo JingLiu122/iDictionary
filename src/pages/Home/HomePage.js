@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { store } from '../../redux';
 
 // import { AddVocabulary, DisplayField, SearchField, ResultField } from './features';
 import AddVocabulary from './features/AddVocabulary';
@@ -7,16 +8,19 @@ import DisplayField from './features/DisplayField';
 import SearchField from './features/SearchField';
 import ResultField from './features/ResultField';
 
-export function HomePage() {
-  const initialDictionary = () => JSON.parse(localStorage.getItem('dictionary')) || [];
+function HomePage({dictionary}) {
+  // const initialDictionary = () => JSON.parse(localStorage.getItem('dictionary')) || [{vocabulary: "futz", type: "verb", definition: "waste time; idle or busy oneself aimlessly"}];
   // declare local state variables
-  const [d, setDictionary] = useState(initialDictionary);
+  const [d, setDictionary] = useState(dictionary);
   const [search, setSearch] = useState('');
 
   // side-effect hooks
   useEffect(() => {
     // obj.toString() => [object Object]
-    localStorage.setItem("dictionary", JSON.stringify(d));
+    // localStorage.setItem("dictionary", JSON.stringify(d));
+    store.subscribe(()=>{
+      localStorage.setItem('dictionary', JSON.stringify(store.getState()))
+    })
   }, [d]);
 
   function handleInputItem(dict) {
@@ -54,4 +58,9 @@ export function HomePage() {
   );
 }
 
-// export default connect(mapStateToProps)(HomePage);
+const mapStateToProps = state => {
+  const { dictionary } = state;
+  return { dictionary };
+}
+
+export default connect(mapStateToProps)(HomePage);
