@@ -13,7 +13,7 @@ export const addWord = (content) => {
 export const searchWord = (word) => {
   return {
     type: SEARCH_WORD,
-    payload: { word }
+    payload: word 
   };
 }
 
@@ -21,6 +21,6 @@ export const searchWord = (word) => {
 export const deleteWord = (word) => {
   return {
     type: DELETE_WORD,
-    payload: { word }
+    payload: word
   };
 }
